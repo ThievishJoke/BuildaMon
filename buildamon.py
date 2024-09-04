@@ -95,7 +95,7 @@ def rand_mon_gimmick():
     global gimmick
     global gimmick_use_method
     global mon_has_cosmetic_forms
-    special = (0, 10, 45, 25, 15, 5, 0, 5, 5, 5)
+    special = (0, 10, 45, 35, 15, 5, 0, 5, 5, 5)
     if "God Pokemon" in strength:
         w = special
     elif "Mythical" in strength:
@@ -116,10 +116,9 @@ def rand_mon_gimmick():
         gimmick_use_method = gimmick_method[2]
     elif "Signiture Move" in gimmick:
         gimmick_use_method = gimmick_method[3]
-    elif "Ability" in gimmick:
+    elif "Signiture Ability" in gimmick:
         while "Ability" in gimmick_use_method:
             gimmick = random.choices(gimmick_method)
-            print(gimmick)
     else:
         gimmick_use_method = random.choices(gimmick_method)
 
@@ -175,7 +174,7 @@ def gen_mon():
 
     return pokemon
 
-for x in range(5):
+for x in range(20):
     random_pokemon = gen_mon()
     print()
     print("Randomly Generated Pokémon:")
