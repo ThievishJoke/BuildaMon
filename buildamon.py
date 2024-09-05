@@ -5,7 +5,7 @@ mon_strength = ["Regular", "Convergent", "Starter", "God Pokemon", "Fossil", "Ps
 evo_count = [0,1,2,3]
 type_count = (0,1,2)
 mon_types = ["Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting", "Poison",
-    "Ground", "Flying", "Phychic", "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"]
+    "Ground", "Flying", "Psychic", "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"]
 starter_main_types = ["Fire", "Water", "Grass", "Electric"]
 mon_gimmick = ["None", "Mega Evolution", "Additional Form", "Signiture Move", "Signiture Ability", "Fusion", "Gigantamax", "New Mechanic", "Corrupted", "Shinning"]
 gimmick_method = ["Held Item", "Seasonal", "Key Item", "Move", "Location", "Time", "Weather", "Ability"]
