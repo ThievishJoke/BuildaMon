@@ -7,7 +7,7 @@ type_count = (0,1,2)
 mon_types = ["Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting", "Poison",
     "Ground", "Flying", "Phychic", "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"]
 starter_main_types = ["Fire", "Water", "Grass", "Electric"]
-mon_gimmick = ["None", "Mega Evolution", "Additional Form", "Signiture Move", "Signiture Ability", "Fusion", "Gigantamax", "New Mechanic", "Corrupted", "Shinning"]
+mon_gimmick = ["None", "Mega Evolution", "Z-Move", "Additional Form", "Signiture Move", "Signiture Ability", "Fusion", "Gigantamax", "New Mechanic", "Corrupted", "Shinning"]
 gimmick_method = ["Held Item", "Seasonal", "Key Item", "Move", "Location", "Time", "Weather", "Ability"]
 aquire_method = ["Route Encounter", "Seasonal", "Ruins", "Hidden Grotto", "Tree", "Cave", "Beach", "Fishing", "Swimming", "Deep Water Swimming",
                 "Random World Encounter", "NPC Trade", "Special"]
@@ -43,7 +43,7 @@ def rand_evo_count():
         elif evolution_stage == 2:
             evolution_stage_type = "Two Stage"
         elif evolution_stage == 3:
-            evolution_stage_type = "Three Stage"
+            evolution_stage_type = "Split"
     if debug == True:
         print(evolution_stage_type)
     return evolution_stage, evolution_stage_type
@@ -95,7 +95,7 @@ def rand_mon_gimmick():
     global gimmick
     global gimmick_use_method
     global mon_has_cosmetic_forms
-    special = (0, 10, 45, 35, 15, 5, 0, 5, 5, 5)
+    special = (0, 10, 15, 45, 35, 15, 5, 0, 5, 5, 5)
     if "God Pokemon" in strength:
         w = special
     elif "Mythical" in strength:
@@ -103,7 +103,7 @@ def rand_mon_gimmick():
     elif "Legendary" in strength:
         w = special
     else:
-        w = (50, 20, 20, 15, 10, 5, 15, 5, 5, 5)
+        w = (50, 20, 15, 20, 15, 10, 5, 15, 5, 5, 5)
     mons_gimmick = random.choices(mon_gimmick, weights=(w))
     gimmick = (random.choice(mons_gimmick))
     if "None" in gimmick:
