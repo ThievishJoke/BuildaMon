@@ -7,7 +7,7 @@ type_count = (0,1,2)
 mon_types = ["Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting", "Poison",
     "Ground", "Flying", "Psychic", "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"]
 starter_main_types = ["Fire", "Water", "Grass", "Electric"]
-mon_gimmick = ["None", "Mega Evolution", "Z-Move", "Additional Form", "Signiture Move", "Signiture Ability", "Fusion", "Gigantamax", "New Mechanic", "Corrupted", "Shinning"]
+mon_gimmick = ["None", "Mega Evolution", "Z-Move", "Additional Form", "Signiture Move", "Signiture Ability", "Fusion", "Gigantamax", "New Mechanic", "Corrupted", "Shinning", "Shadow"]
 gimmick_method = ["Held Item", "Seasonal", "Key Item", "Move", "Location", "Time", "Weather", "Ability"]
 aquire_method = ["Route Encounter", "Seasonal", "Ruins", "Hidden Grotto", "Tree", "Cave", "Beach", "Fishing", "Swimming", "Deep Water Swimming",
                 "Random World Encounter", "NPC Trade", "Special"]
@@ -31,11 +31,16 @@ def rand_evo_count():
     if "Starter" in strength:
         evolution_stage = 2
         evolution_stage_type = "Two Stage"
+    elif "Convergent" in strength:
+        evolution_stage = random.choices(evo_count, weights=(0,25,50,0))[0]
+        if evolution_stage == 1:
+            evolution_stage_type = "One Stage"
+        elif evolution_stage == 2:
+            evolution_stage_type = "Two Stage"
     else:
-        evolution_stage = random.choices(evo_count, weights=(50,25,50,5))[0]
+        evolution_stage = random.choices(evo_count, weights=(50,25,50,10))[0]
         if debug == True:
             print("Stage Value", evolution_stage)
-
         if evolution_stage == 0:
             evolution_stage_type = "Basic"
         elif evolution_stage == 1:
@@ -95,7 +100,7 @@ def rand_mon_gimmick():
     global gimmick
     global gimmick_use_method
     global mon_has_cosmetic_forms
-    special = (0, 10, 15, 45, 35, 15, 5, 0, 5, 5, 5)
+    special = (0, 10, 15, 45, 35, 15, 5, 0, 5, 5, 5, 5)
     if "God Pokemon" in strength:
         w = special
     elif "Mythical" in strength:
@@ -103,7 +108,7 @@ def rand_mon_gimmick():
     elif "Legendary" in strength:
         w = special
     else:
-        w = (50, 20, 15, 20, 15, 10, 5, 15, 5, 5, 5)
+        w = (60, 20, 15, 20, 15, 10, 5, 15, 5, 5, 5, 5)
     mons_gimmick = random.choices(mon_gimmick, weights=(w))
     gimmick = (random.choice(mons_gimmick))
     if "None" in gimmick:
@@ -114,10 +119,12 @@ def rand_mon_gimmick():
         gimmick_use_method = gimmick_method[2]
     elif "Gigantamax" in gimmick:
         gimmick_use_method = gimmick_method[2]
+    elif "Z-Move" in gimmick:
+        gimmick_use_method = gimmick_method[2]
     elif "Signiture Move" in gimmick:
         gimmick_use_method = gimmick_method[3]
     elif "Signiture Ability" in gimmick:
-        while "Ability" in gimmick_use_method:
+        while "Ability" in gimmick_method:
             gimmick = random.choices(gimmick_method)
     else:
         gimmick_use_method = random.choices(gimmick_method)
@@ -139,8 +146,32 @@ def rand_aquire_method():
 
 def rand_stat_distribution():
     global distribution_lean
+    global distribution_lean_2
+    global base_stat_total
     stat_distibution_leans = ["HP", "Atk", "Def", "Sp. Atk", "Sp.Def", "Speed"]
-    distribution_lean = random.choice(stat_distibution_leans)
+    def rand_stat_lean():
+        rand_distribution_lean = random.choice(stat_distibution_leans)
+        return rand_distribution_lean
+    distribution_lean = rand_stat_lean()
+    if evolution_stage == 0:
+        base_stat_total = random.randint(250, 575)
+    if evolution_stage == 1:
+        base_stat_total = random.randint(270, 675)
+    if evolution_stage == 2:
+        base_stat_total = random.randint(295, 650)
+    if evolution_stage == 3:
+        base_stat_total = random.randint(195, 550)
+    if "Starter" in strength:
+        base_stat_total = 528
+    # if mon is legendary roll a second stat lean (can be identical to first)
+    if "Legendary" in strength:
+        distribution_lean_2 = rand_stat_lean()
+        base_stat_total = random.randint(300, 800)
+
+def rand_mon_color():
+    global mon_color
+    rand_mon_color_list = ("Red", "Orange", "Yellow", "Green", "Cyan", "Blue", "Indigo", "Violet", "Black", "White")
+    mon_color = random.choices(rand_mon_color_list)
 
 def gen_mon():
     rand_mon_strength()
@@ -149,10 +180,11 @@ def gen_mon():
     rand_mon_gimmick()
     rand_aquire_method()
     rand_stat_distribution()
+    rand_mon_color()
 
     pokemon = {
         "Category ": strength,
-        "Evolution": evolution_stage,
+        "Evolutions": evolution_stage,
         "Evolution Type": evolution_stage_type,
         "Type 1": monster_type[0],
     }
@@ -170,14 +202,23 @@ def gen_mon():
     if mon_has_cosmetic_forms == True:
         pokemon["Has Cosmetic Forms"] = mon_has_cosmetic_forms
     
-    pokemon["Stat Distribution Lean"] = distribution_lean
+    if "Legendary" in strength:
+        pokemon["Stat Distribution Lean"] = distribution_lean
+        pokemon["Stat Distribution Lean 2"] = distribution_lean_2
+        pokemon["Base Stat Total"] = base_stat_total
+    else:
+        pokemon["Stat Distribution Lean"] = distribution_lean
+        pokemon["Base Stat Total"] = base_stat_total
+        pokemon["Mon Color"] = mon_color
 
     return pokemon
 
-for x in range(20):
+rand_val = int(input("Insert the number of Mon you want to generate: "))
+for x in range(rand_val):
     random_pokemon = gen_mon()
     print()
     print("Randomly Generated Pokémon:")
+    print("---------------------------")
     for key, value in random_pokemon.items():
-        print(f"{key}: {value}")
+        print(f"{key:23s}: {value}")
 
