@@ -9,7 +9,7 @@ type_count = (0,1,2)
 mon_types = ["Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting", "Poison",
     "Ground", "Flying", "Psychic", "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"]
 starter_main_types = ["Fire", "Water", "Grass", "Electric"]
-mon_gimmick = ["None", "Mega Evolution", "Z-Move", "Additional Form", "Signiture Move", "Signiture Ability", "Fusion", "Gigantamax", "New Mechanic", "Corrupted", "Shinning", "Shadow"]
+mon_gimmick = ["None", "Mega Evolution", "Z-Move", "Additional Form", "Signature Move", "Signature Ability", "Fusion", "Gigantamax", "New Mechanic", "Corrupted", "Shinning", "Shadow"]
 gimmick_method = ["Held Item", "Seasonal", "Key Item", "Move", "Location", "Time", "Weather", "Ability"]
 aquire_method = ["Route Encounter", "Seasonal Route Encounter", "Ruins", "Hidden Grotto", "Tree", "Cave", "Beach", "Fishing", "Swimming", "Deep Water Swimming",
                 "Random World Encounter", "NPC Trade", "Special", "Urban", "Industrial"]
@@ -49,6 +49,15 @@ custom_special_aquire_method= [] # Add custom special aquire method here
 if custom_aquisition_rule:
     apply_custom_rule(custom_aquisition_rule, custom_aquire_method, special_aquire_method, debug)
 
+custom_mon_strength_rule = False
+defualt_mon_strength_weights = (75,2,15,.75,10,5,1.5,4,3)
+custom_mon_strength_weights = ()
+if custom_mon_strength_rule:
+    mon_strength_weights = custom_mon_strength_weights
+else:
+    mon_strength_weights = defualt_mon_strength_weights
+    
+
 # Mapping gimmicks to specific gimmick methods
 gimmick_method_mapping = {
     "Mega Evolution": "Held Item", #Always held item (Mega Stone)
@@ -60,8 +69,8 @@ gimmick_method_mapping = {
 }
 
 def rand_mon_strength(): # Picks random mon strength
-    global strength
-    strength = random.choices(mon_strength, weights=(75,3,15,.5,10,5,1.5,3,3))[0]
+    global strength, mon_strength_weights
+    strength = random.choices(mon_strength, mon_strength_weights)[0]
     if debug:
         print(f"\nStrength: {strength}")
     return strength
@@ -157,7 +166,7 @@ def rand_mon_gimmick(): # Pick random mon gimmick with exceptions
         gimmick_use_method = "Ability"
     else:
         gimmick = (random.choice(mons_gimmick))
-        #print("Gimmick", gimmick)
+        #print("Gimmick", gimmick, "Mons Gimmick",mons_gimmick)
 
     if gimmick in gimmick_method_mapping:
         gimmick_use_method = gimmick_method_mapping[gimmick]
@@ -179,6 +188,8 @@ def rand_aquire_method(): # Pick random aquire method with exceptions
     method_to_aquire = random.choices(aquire_method)[0]
     if "Starter" in strength:
         method_to_aquire = special_aquire_method[5]
+    if "God Pokemon" in strength:
+        method_to_aquire = special_aquire_method[2]
     if "Ultra Beast" in strength:
         method_to_aquire = "Ultra Wormhole"
     if "Special" in method_to_aquire:
@@ -195,17 +206,20 @@ def rand_stat_distribution(): # Determine mons distribution lean and base stat t
     if evolution_stage == 0:
         base_stat_total = random.randint(250, 575)
     if evolution_stage == 1:
-        base_stat_total = random.randint(270, 675)
+        base_stat_total = random.randint(380, 675)
     if evolution_stage == 2:
-        base_stat_total = random.randint(295, 650)
+        base_stat_total = random.randint(380, 650)
     if evolution_stage == 3:
-        base_stat_total = random.randint(195, 550)
+        base_stat_total = random.randint(380, 525)
     if "Starter" in strength:
         base_stat_total = 528
     # If mon is legendary roll a second stat lean (can be identical to first)
     if "Legendary" in strength:
         distribution_lean_2 = rand_stat_lean()
-        base_stat_total = random.randint(300, 800)
+        base_stat_total = random.randint(400, 970)
+    if "God Pokemon" in strength:
+        distribution_lean_2 = rand_stat_lean()
+        base_stat_total = random.randint(500, 1500)
 
 def rand_mon_color(): # Pick random listed color
     global mon_color
@@ -259,6 +273,7 @@ def gen_mon():
     
     return pokemon
 
+#Generate Mons
 rand_val = int(input("Insert the number of Mon you want to generate: "))
 for x in range(rand_val):
     random_pokemon = gen_mon()
