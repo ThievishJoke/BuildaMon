@@ -4,17 +4,22 @@ import random
 
 mon_strength = ["Regular", "Convergent", "Starter", "God Pokemon",
                 "Fossil", "Pseudo", "Mythical", "Legendary", "Ultra Beast"]
-mon_types = ["Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting", "Poison",
-             "Ground", "Flying", "Psychic", "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"]
+mon_types = ["Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting",
+             "Poison", "Ground", "Flying", "Psychic", "Bug", "Rock", "Ghost",
+             "Dragon", "Dark", "Steel", "Fairy"]
 starter_main_types = ["Fire", "Water", "Grass", "Electric"]
-mon_gimmick = ["None", "Mega Evolution", "Z-Move", "Additional Form", "Signature Move",
-               "Signature Ability", "Fusion", "Gigantamax", "New Mechanic", "Corrupted", "Shining", "Shadow"]
+mon_gimmick = ["None", "Mega Evolution", "Z-Move", "Additional Form",
+               "Signature Move", "Signature Ability", "Fusion", "Gigantamax",
+               "New Mechanic", "Corrupted", "Shining", "Shadow"]
 gimmick_method = ["Held Item", "Seasonal", "Key Item",
                   "Move", "Location", "Time", "Weather", "Ability"]
-aquire_method = ["Route Encounter", "Seasonal Route Encounter", "Ruins", "Hidden Grotto", "Tree", "Cave", "Beach", "Fishing", "Swimming", "Deep Water Swimming",
-                 "Random World Encounter", "NPC Trade", "Special", "Urban", "Industrial"]
+aquire_method = ["Route Encounter", "Seasonal Route Encounter", "Ruins",
+                 "Hidden Grotto", "Tree", "Cave", "Beach", "Fishing",
+                 "Swimming", "Deep Water Swimming", "Random World Encounter",
+                 "NPC Trade", "Special", "Urban", "Industrial"]
 dragon_shapes = ["Cockatrice", "Wyvern", "Amphithere", "Fae", "Dragon",
-                 "Wyrm", "Sea Serpent", "Quetzalcoatl", "Lindwurm", "Salamander", "Lung Dragon", "Drake", "Hydra", "Kirin"]
+                 "Wyrm", "Sea Serpent", "Quetzalcoatl", "Lindwurm",
+                 "Salamander", "Lung Dragon", "Drake", "Hydra", "Kirin"]
 special_aquire_method = ["Story", "Scripted Event", "Post Story Encounter",
                          "Side Quest Encounter", "Limited Time Event", "Gift"]
 
@@ -96,8 +101,10 @@ def generate_random_pokemon():
     distribution_lean = random.choice(
         ["HP", "Atk", "Def", "Sp. Atk", "Sp.Def", "Speed"])
 
-    mon_color = random.choice(["Red", "Red-Orange", "Orange", "Orange-Yellow", "Yellow", "Yellow-Green", "Green", "Cyan",
-                               "Blue", "Indigo", "Violet", "Black", "Grey", "White"])
+    mon_color = random.choice(["Red", "Red-Orange", "Orange", "Orange-Yellow",
+                               "Yellow", "Yellow-Green", "Green", "Cyan",
+                               "Blue", "Indigo", "Violet", "Black", "Grey",
+                               "White"])
 
     output_text.set(f"Generated Pokémon:\nStrength: {strength}\n"
                     f"Type 1: {type_1}\nType 2: {type_2}\n"
