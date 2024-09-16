@@ -35,7 +35,7 @@ region_orgin_anime_exclusive = ["Orange Islands"]
 #regions_of_origin.extend(region_orgin_side_series)
 #regions_of_origin.extend(region_orgin_anime_exclusive)
 
-print("Regions Of Origin", regions_of_origin)
+#print("Regions Of Origin", regions_of_origin)
 mon_has_cosmetic_forms = False
 
 # Initializes a counter
