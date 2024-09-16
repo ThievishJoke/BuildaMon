@@ -22,8 +22,8 @@ aquire_method = ["Route Encounter", "Seasonal Route Encounter", "Ruins",
 dragon_shapes = ["Cockatrice", "Wyvern", "Amphithere", "Fae", "Dragon",
                  "Wyrm", "Sea Serpent", "Quetzalcoatl", "Lindwurm",
                  "Salamander", "Lung Dragon", "Drake", "Hydra", "Kirin"]
-special_aquire_method = ["Story", "Scripted Event", "Post Story Ecounter",
-                         "Side Quest Encoutner", "Limited Time Event", "Gift"]
+special_aquire_method = ["Story", "Scripted Event", "Post Story Encounter",
+                         "Side Quest Encounter", "Limited Time Event", "Gift"]
 region_orgin_mainline = ["Kanto", "Sevii Islands", "Johto", "Hoenn", "Sinnoh",
                           "Battle Zone", "Hisui", "Unova", "Kalos", "Alola",
                           "Galar", "Paldea", "Kitakami"]
@@ -232,7 +232,7 @@ def rand_aquire_method():  # Pick random aquire method with exceptions
     if "Ultra Beast" in strength:
         method_to_aquire = "Ultra Wormhole"
     if "Special" in method_to_aquire:
-        method_to_aquire = random.choices(special_aquire_method)
+        method_to_aquire = random.choices(special_aquire_method)[0]
     return method_to_aquire
 
 
