@@ -2,7 +2,8 @@ import tkinter as tk
 from tkinter import ttk
 import random
 
-mon_strength = ["Regular", "Convergent", "Starter", "God Pokemon", "Fossil", "Pseudo", "Mythical", "Legendary", "Ultra Beast"]
+mon_strength = ["Regular", "Convergent", "Starter", "God Pokemon",
+                "Fossil", "Pseudo", "Mythical", "Legendary", "Ultra Beast"]
 mon_types = ["Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting", "Poison",
              "Ground", "Flying", "Psychic", "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"]
 starter_main_types = ["Fire", "Water", "Grass", "Electric"]
@@ -81,7 +82,8 @@ def generate_random_pokemon():
 
     # New additions
     evolution_stage = random.randint(0, 3)
-    evolution_stage_type = ["Basic", "One Stage", "Two Stage", "Split"][evolution_stage]
+    evolution_stage_type = ["Basic", "One Stage",
+                            "Two Stage", "Split"][evolution_stage]
 
     if "Dragon" in [type_1, type_2]:
         dragon_shape = random.choice(dragon_shapes)
@@ -91,7 +93,8 @@ def generate_random_pokemon():
     mon_has_cosmetic_forms = random.choice([True, False])
 
     base_stat_total = random.randint(250, 675)
-    distribution_lean = random.choice(["HP", "Atk", "Def", "Sp. Atk", "Sp.Def", "Speed"])
+    distribution_lean = random.choice(
+        ["HP", "Atk", "Def", "Sp. Atk", "Sp.Def", "Speed"])
 
     mon_color = random.choice(["Red", "Red-Orange", "Orange", "Orange-Yellow", "Yellow", "Yellow-Green", "Green", "Cyan",
                                "Blue", "Indigo", "Violet", "Black", "Grey", "White"])
@@ -164,7 +167,8 @@ method_listbox.grid(row=7, column=1)
 for method in gimmick_method:
     method_listbox.insert(tk.END, method)
 
-ttk.Label(root, text="Acquisition Method:").grid(row=10, column=0, padx=5, pady=5)
+ttk.Label(root, text="Acquisition Method:").grid(
+    row=10, column=0, padx=5, pady=5)
 acquire_method_listbox = tk.Listbox(root, selectmode="multiple", height=5)
 acquire_method_listbox.grid(row=10, column=1)
 for method in aquire_method:

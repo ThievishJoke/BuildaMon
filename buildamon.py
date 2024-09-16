@@ -1,4 +1,3 @@
-
 import random
 
 # Methods and Variables
