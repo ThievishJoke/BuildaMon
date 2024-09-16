@@ -2,15 +2,27 @@ import tkinter as tk
 from tkinter import ttk
 import random
 
-# Original variables
-mon_strength = ["Regular", "Convergent", "Starter", "God Pokemon", "Fossil", "Pseudo", "Mythical", "Legendary"]
-mon_types = ["Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting", "Poison",
-             "Ground", "Flying", "Psychic", "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"]
-mon_gimmick = ["None", "Mega Evolution", "Additional Form", "Signature Move", "Signature Ability", "Fusion", 
-               "Gigantamax", "New Mechanic", "Corrupted", "Shining"]
-gimmick_method = ["Held Item", "Seasonal", "Key Item", "Move", "Location", "Time", "Weather", "Ability"]
+mon_strength = ["Regular", "Convergent", "Starter", "God Pokemon",
+                "Fossil", "Pseudo", "Mythical", "Legendary", "Ultra Beast"]
+mon_types = ["Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting",
+             "Poison", "Ground", "Flying", "Psychic", "Bug", "Rock", "Ghost",
+             "Dragon", "Dark", "Steel", "Fairy"]
+starter_main_types = ["Fire", "Water", "Grass", "Electric"]
+mon_gimmick = ["None", "Mega Evolution", "Z-Move", "Additional Form",
+               "Signature Move", "Signature Ability", "Fusion", "Gigantamax",
+               "New Mechanic", "Corrupted", "Shining", "Shadow"]
+gimmick_method = ["Held Item", "Seasonal", "Key Item",
+                  "Move", "Location", "Time", "Weather", "Ability"]
+aquire_method = ["Route Encounter", "Seasonal Route Encounter", "Ruins",
+                 "Hidden Grotto", "Tree", "Cave", "Beach", "Fishing",
+                 "Swimming", "Deep Water Swimming", "Random World Encounter",
+                 "NPC Trade", "Special", "Urban", "Industrial"]
+dragon_shapes = ["Cockatrice", "Wyvern", "Amphithere", "Fae", "Dragon",
+                 "Wyrm", "Sea Serpent", "Quetzalcoatl", "Lindwurm",
+                 "Salamander", "Lung Dragon", "Drake", "Hydra", "Kirin"]
+special_aquire_method = ["Story", "Scripted Event", "Post Story Encounter",
+                         "Side Quest Encounter", "Limited Time Event", "Gift"]
 
-# Mapping gimmicks to specific gimmick methods
 gimmick_method_mapping = {
     "Mega Evolution": "Held Item",
     "Fusion": "Key Item",
@@ -60,10 +72,32 @@ def generate_random_pokemon():
         method_listbox.config(state="disabled")  # Disable listbox for forced method
     else:
         method_listbox.config(state="normal")
-        selected_methods = [method_listbox.get(i) for i in method_listbox.curselection()]
-        acquire_method = random.choice(selected_methods) if selected_methods else random.choice(gimmick_method)
-    
-    # Display generated Pokémon
+        selected_methods = [method_listbox.get(
+            i) for i in method_listbox.curselection()]
+        acquire_method = random.choice(
+            selected_methods) if selected_methods else random.choice(gimmick_method)
+
+    # New additions
+    evolution_stage = random.randint(0, 3)
+    evolution_stage_type = ["Basic", "One Stage",
+                            "Two Stage", "Split"][evolution_stage]
+
+    if "Dragon" in [type_1, type_2]:
+        dragon_shape = random.choice(dragon_shapes)
+    else:
+        dragon_shape = "N/A"
+
+    mon_has_cosmetic_forms = random.choice([True, False])
+
+    base_stat_total = random.randint(250, 675)
+    distribution_lean = random.choice(
+        ["HP", "Atk", "Def", "Sp. Atk", "Sp.Def", "Speed"])
+
+    mon_color = random.choice(["Red", "Red-Orange", "Orange", "Orange-Yellow",
+                               "Yellow", "Yellow-Green", "Green", "Cyan",
+                               "Blue", "Indigo", "Violet", "Black", "Grey",
+                               "White"])
+
     output_text.set(f"Generated Pokémon:\nStrength: {strength}\n"
                     f"Type 1: {type_1}\nType 2: {type_2}\n"
                     f"Gimmick: {gimmick}\nGimmick Method: {acquire_method}")

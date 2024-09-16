@@ -6,17 +6,36 @@ mon_strength = ["Regular", "Convergent", "Starter", "God Pokemon",
                 "Fossil", "Pseudo", "Mythical", "Legendary", "Ultra Beast"]
 evo_count = [0, 1, 2, 3]
 type_count = (0, 1, 2)
-mon_types = ["Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting", "Poison",
-             "Ground", "Flying", "Psychic", "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"]
+mon_types = ["Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting",
+             "Poison", "Ground", "Flying", "Psychic", "Bug", "Rock", "Ghost",
+             "Dragon", "Dark", "Steel", "Fairy"]
 starter_main_types = ["Fire", "Water", "Grass", "Electric"]
-mon_gimmick = ["None", "Mega Evolution", "Z-Move", "Additional Form", "Signature Move", "Signature Ability", "Fusion", "Gigantamax", "New Mechanic", "Corrupted", "Shinning", "Shadow"]
-gimmick_method = ["Held Item", "Seasonal", "Key Item", "Move", "Location", "Time", "Weather", "Ability"]
-aquire_method = ["Route Encounter", "Seasonal Route Encounter", "Ruins", "Hidden Grotto", "Tree", "Cave", "Beach", "Fishing", "Swimming", "Deep Water Swimming",
-                 "Random World Encounter", "NPC Trade", "Special", "Urban", "Industrial"]
+mon_gimmick = ["None", "Mega Evolution", "Z-Move", "Additional Form",
+               "Signature Move", "Signiture Ability", "Fusion", "Gigantamax",
+               "New Mechanic", "Corrupted", "Shinning", "Shadow"]
+gimmick_method = ["Held Item", "Seasonal", "Key Item",
+                  "Move", "Location", "Time", "Weather", "Ability"]
+aquire_method = ["Route Encounter", "Seasonal Route Encounter", "Ruins",
+                 "Hidden Grotto", "Tree", "Cave", "Beach", "Fishing",
+                 "Swimming", "Deep Water Swimming", "Random World Encounter",
+                 "NPC Trade", "Special", "Urban", "Industrial"]
 dragon_shapes = ["Cockatrice", "Wyvern", "Amphithere", "Fae", "Dragon",
-                 "Wyrm", "Sea Serpent", "Quetzalcoatl", "Lindwurm", "Salamander", "Lung Dragon", "Drake", "Hydra", "Kirin"]
+                 "Wyrm", "Sea Serpent", "Quetzalcoatl", "Lindwurm",
+                 "Salamander", "Lung Dragon", "Drake", "Hydra", "Kirin"]
 special_aquire_method = ["Story", "Scripted Event", "Post Story Ecounter",
                          "Side Quest Encoutner", "Limited Time Event", "Gift"]
+region_orgin_mainline = ["Kanto", "Sevii Islands", "Johto", "Hoenn", "Sinnoh",
+                          "Battle Zone", "Hisui", "Unova", "Kalos", "Alola",
+                          "Galar", "Paldea", "Kitakami"]
+region_orgin_side_series = ["Orre", "Fiore", "Almia", "Oblivia", "Ransei", 
+                            "Ransei Kingdoms", "Pasio", "Lental"]
+region_orgin_anime_exclusive = ["Orange Islands"]
+#regions_of_origin = []
+#regions_of_origin.extend(region_orgin_mainline)
+#regions_of_origin.extend(region_orgin_side_series)
+#regions_of_origin.extend(region_orgin_anime_exclusive)
+
+print("Regions Of Origin", regions_of_origin)
 mon_has_cosmetic_forms = False
 
 # Initializes a counter
@@ -26,7 +45,8 @@ mon_counter = 0
 debug = False
 
 
-def apply_custom_rule(custom_rule, custom_list, target_list, debug):  # Build custom methods
+# Build custom methods
+def apply_custom_rule(custom_rule, custom_list, target_list, debug):
     if custom_rule:
         target_list.extend(custom_list)
         if debug:
@@ -84,7 +104,8 @@ def rand_mon_strength(): # Picks random mon strength
 
 
 def rand_evo_count():  # Pick random number of evolutinon stages:
-    # Basic -> Stage 1 -> Stage 2, Split (Stage 1a, Stage 1b, ect.) or Stage 1 (Stage 2a, Stage 2b, ect.)
+    # Basic -> Stage 1 -> Stage 2,
+    # Split (Stage 1a, Stage 1b, ect.) or Stage 1 (Stage 2a, Stage 2b, ect.)
     global evolution_stage, evolution_stage_type
     evolution_stage_type = ""
     if "Starter" in strength:
@@ -119,7 +140,7 @@ def rand_evo_count():  # Pick random number of evolutinon stages:
 
 def rand_type():  # Picks random type
     global monster_type, dragon_shape
-    # Starters always include one of the following [Water, Fire, Grass, Electric]
+    # Starters always include one of Water, Fire, Grass, Electric
     if "Starter" in strength:
         a = random.choices(type_count, weights=(0, 50, 50))
         z = (random.choice(a))
@@ -160,20 +181,23 @@ def rand_type():  # Picks random type
     if (type_1 or type_2 == "Dragon"):  # If dragon type pick type of dragon
         dragon_shape = random.choice(dragon_shapes)
     if debug:
-        print(f"Type(s): ", monster_type[0], monster_type[1] if len(monster_type) > 1 else "",
-              dragon_shape if "Dragon" in monster_type else "")
+        print(f"Type(s): {monster_type[0]}{' ' + monster_type[1] if len(monster_type) > 1 else ''}"
+              f"{' ' + dragon_shape if 'Dragon' in monster_type else ''}")
     return monster_type, dragon_shape
 
 
 def rand_mon_gimmick():  # Pick random mon gimmick with exceptions
     global gimmick, gimmick_use_method, mon_has_cosmetic_forms
 
-    gimmick_weights = [60, 20, 15, 20, 20, 10, 5, 20, 5, 5, 5, 5] if strength not in [
-        "God Pokemon", "Mythical", "Legendary"] else [0, 10, 20, 45, 35, 20, 5, 0, 5, 5, 5, 5]
+    gimmick_weights = [60, 20, 15, 20,
+                       20, 10, 5, 20, 5, 5, 5, 5] if strength not in [
+        "God Pokemon", "Mythical", "Legendary"] else [0, 10, 20, 45, 35, 20, 5,
+                                                      0, 5, 5, 5, 5]
 
     mons_gimmick = random.choices(mon_gimmick, weights=(gimmick_weights))
 
-    if "Ultra Beast" in strength:  # Ultra Beast always have Beast Boost as their ability
+    if "Ultra Beast" in strength:
+        # Ultra Beast always have Beast Boost as their ability
         gimmick = "Beast Boost"
         gimmick_use_method = "Ability"
     else:
@@ -212,7 +236,8 @@ def rand_aquire_method():  # Pick random aquire method with exceptions
     return method_to_aquire
 
 
-def rand_stat_distribution():  # Determine mons distribution lean and base stat total
+# Determine mons distribution lean and base stat total
+def rand_stat_distribution():
     global distribution_lean, distribution_lean_2, base_stat_total
     stat_distibution_leans = ["HP", "Atk", "Def", "Sp. Atk", "Sp.Def", "Speed"]
 
@@ -241,8 +266,10 @@ def rand_stat_distribution():  # Determine mons distribution lean and base stat 
 
 def rand_mon_color():  # Pick random listed color
     global mon_color
-    mon_color = random.choice(["Red", "Red-Orange", "Orange", "Orange-Yellow", "Yellow", "Yellow-Green", "Green", "Cyan",
-                               "Blue", "Indigo", "Violet", "Black", "Grey", "White"])
+    mon_color = random.choice(["Red", "Red-Orange", "Orange", "Orange-Yellow",
+                               "Yellow", "Yellow-Green", "Green", "Cyan",
+                               "Blue", "Indigo", "Violet", "Black", "Grey",
+                               "White", "Metallic"])
 
 
 def gen_mon():
@@ -276,7 +303,7 @@ def gen_mon():
 
     pokemon["Aquire Method"] = method_to_aquire
 
-    if mon_has_cosmetic_forms == True:
+    if mon_has_cosmetic_forms:
         pokemon["Has Cosmetic Forms"] = mon_has_cosmetic_forms
 
     if "Legendary" in strength:
