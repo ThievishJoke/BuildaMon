@@ -24,18 +24,19 @@ dragon_shapes = ["Cockatrice", "Wyvern", "Amphithere", "Fae", "Dragon",
                  "Salamander", "Lung Dragon", "Drake", "Hydra", "Kirin"]
 special_aquire_method = ["Story", "Scripted Event", "Post Story Encounter",
                          "Side Quest Encounter", "Limited Time Event", "Gift"]
-region_orgin_mainline = ["Kanto", "Sevii Islands", "Johto", "Hoenn", "Sinnoh",
+region_orgin_mainline = ["Kanto", "Sevii Islands", "Johto", "Hoenn", "Sinnoh", #Region of origin is not implemented
                           "Battle Zone", "Hisui", "Unova", "Kalos", "Alola",
                           "Galar", "Paldea", "Kitakami"]
 region_orgin_side_series = ["Orre", "Fiore", "Almia", "Oblivia", "Ransei", 
                             "Ransei Kingdoms", "Pasio", "Lental"]
 region_orgin_anime_exclusive = ["Orange Islands"]
+evolution_methods = ["Level Up", "Friendship", "Trade", "Evolution Stone", "Item", "Location", "Time", "Move"]
+
 #regions_of_origin = []
 #regions_of_origin.extend(region_orgin_mainline)
 #regions_of_origin.extend(region_orgin_side_series)
 #regions_of_origin.extend(region_orgin_anime_exclusive)
 
-#print("Regions Of Origin", regions_of_origin)
 mon_has_cosmetic_forms = False
 
 # Initializes a counter
@@ -75,15 +76,18 @@ custom_special_aquire_method = []  # Add custom special aquire method here
 if custom_aquisition_rule:
     apply_custom_rule(custom_aquisition_rule,
                       custom_aquire_method, special_aquire_method, debug)
-
-custom_mon_strength_rule = False
+custom_mon_strength_rule = False # Adds custom strength weight rule
 defualt_mon_strength_weights = (75,2,15,.75,10,5,1.5,4,3)
 custom_mon_strength_weights = ()
 if custom_mon_strength_rule:
     mon_strength_weights = custom_mon_strength_weights
 else:
     mon_strength_weights = defualt_mon_strength_weights
-    
+custom_evolution_method_rule = False # Custom evolution method rule
+custom_evolution_methods = []
+if custom_evolution_method_rule:
+    apply_custom_rule(custom_evolution_method_rule, custom_evolution_methods,
+                      evolution_methods, debug)
 
 # Mapping gimmicks to specific gimmick methods
 gimmick_method_mapping = {
@@ -106,9 +110,12 @@ def rand_mon_strength(): # Picks random mon strength
 def rand_evo_count():  # Pick random number of evolutinon stages:
     # Basic -> Stage 1 -> Stage 2,
     # Split (Stage 1a, Stage 1b, ect.) or Stage 1 (Stage 2a, Stage 2b, ect.)
-    global evolution_stage, evolution_stage_type
+    global evolution_stage, evolution_stage_type, number_of_evolutions
     evolution_stage_type = ""
     if "Starter" in strength:
+        evolution_stage = 2
+        evolution_stage_type = "Two Stage"
+    elif "Pseudo" in strength:
         evolution_stage = 2
         evolution_stage_type = "Two Stage"
     elif "Convergent" in strength:
@@ -120,23 +127,41 @@ def rand_evo_count():  # Pick random number of evolutinon stages:
     else:
         evolution_stage = random.choices(
             evo_count, weights=(50, 25, 50, 10))[0]
-        if debug:
-            print("Stage Value", evolution_stage)
-        if evolution_stage == 0:
-            evolution_stage_type = "Basic"
-        elif evolution_stage == 1:
-            evolution_stage_type = "One Stage"
-        elif evolution_stage == 2:
-            evolution_stage_type = "Two Stage"
-        elif evolution_stage == 3:
-            evolution_stage_type = "Split"
-            number_of_splits = random.randint(2, 4)
-            if number_of_splits == 4:
-                number_of_splits = 3 + random.randint(1, 13)
     if debug:
-        print(evolution_stage_type)
-    return evolution_stage, evolution_stage_type
+        print(f"Stage Value, {evolution_stage}")
+    if evolution_stage == 0:
+        evolution_stage_type = "Basic"
+        number_of_evolutions = 0 # Does not evolve
+    elif evolution_stage == 1:
+        evolution_stage_type = "One Stage"
+        number_of_evolutions = 1 # Single evolution
+    elif evolution_stage == 2:
+        evolution_stage_type = "Two Stage"
+        number_of_evolutions = 2 # Two evolutions
+    elif evolution_stage == 3:
+        evolution_stage_type = "Split"
+        number_of_splits = random.randint(2, 4) # Pick number of splits
+        number_of_evolutions = number_of_splits # Match number of evolutions to the number of splits
+        if number_of_splits == 4: # Reroll if 4, Max number of splits is one for each type
+            number_of_splits = 3 + random.randint(1, 13)
+            number_of_evolutions = number_of_splits
+    if debug:
+        print(f"Evolution stage type, {evolution_stage_type}, Number of evolutions {number_of_evolutions}")
+    return evolution_stage, evolution_stage_type, number_of_evolutions
 
+def rand_mon_evolution_method(): # Pick random evolution method
+    global evolution_method
+    if evolution_stage_type == "Basic":
+        evolution_method = "None"
+    elif evolution_stage_type == "Split":
+        evolution_method = []
+        for x in range(number_of_evolutions): # Picks a random evolution method for each split
+            evolution_method.append(random.choice(evolution_methods))
+    else:
+        evolution_method = random.choice(evolution_methods)
+    if debug:
+        print(f"Evolution Method: {evolution_method}")
+    return evolution_method
 
 def rand_type():  # Picks random type
     global monster_type, dragon_shape
@@ -202,16 +227,13 @@ def rand_mon_gimmick():  # Pick random mon gimmick with exceptions
         gimmick_use_method = "Ability"
     else:
         gimmick = (random.choice(mons_gimmick))
-        #print("Gimmick", gimmick, "Mons Gimmick",mons_gimmick)
 
     if gimmick in gimmick_method_mapping:
         gimmick_use_method = gimmick_method_mapping[gimmick]
-        # print("Silly Gimmicks", gimmick_use_method)
     elif "Ultra Beast" in strength:
         pass
     else:
         gimmick_use_method = random.choices(gimmick_method)[0]
-        # print("3", gimmick_use_method)
 
     form_option = [True, False]
     mon_has_cosmetic_forms = random.choices(
@@ -271,11 +293,11 @@ def rand_mon_color():  # Pick random listed color
                                "Blue", "Indigo", "Violet", "Black", "Grey",
                                "White", "Metallic"])
 
-
 def gen_mon():
     global mon_counter
     rand_mon_strength()
     rand_evo_count()
+    rand_mon_evolution_method()
     rand_type()
     rand_mon_gimmick()
     rand_aquire_method()
@@ -284,10 +306,13 @@ def gen_mon():
 
     pokemon = {
         "Category ": strength,
-        "Evolutions": evolution_stage,
+        "Evolution ID": evolution_stage,
         "Evolution Type": evolution_stage_type,
+        "Evolutions": number_of_evolutions,
+        "Evolution Method": evolution_method,
         "Type 1": monster_type[0],
     }
+
 
     if len(monster_type) > 1:
         pokemon["Type 2"] = monster_type[1]
@@ -319,7 +344,7 @@ def gen_mon():
 
     return pokemon
 
-#Generate Mons
+# Generate Mons
 rand_val = int(input("Insert the number of Mon you want to generate: "))
 for x in range(rand_val):
     random_pokemon = gen_mon()
