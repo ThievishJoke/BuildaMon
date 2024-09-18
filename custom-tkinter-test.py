@@ -47,6 +47,11 @@ gimmick_method_mapping = {
     "Z-Move": "Held Item",  # Always key item (Z crystal)
     "Signature Move": "Move",  # Always the move
     "Signature Ability": "Ability",  # Always the ability
+    "Beast Boost": "Ability"  # Always the ability
+}
+
+type_specific_attribute = {
+    "Dragon": "Dragon Shapes"
 }
 
 class CustomCTkListbox(CTkListbox):
@@ -71,7 +76,7 @@ class CustomCTkListbox(CTkListbox):
         pass
 
 # Function to center the window
-def center_window(window, width=500, height=550):
+def center_window(window, width=500, height=750):
     screen_width = window.winfo_screenwidth()
     screen_height = window.winfo_screenheight()
     position_top = int(screen_height / 2 - height / 2)
@@ -95,13 +100,16 @@ def generate_random_pokemon():
         type_1 = random.choice(selected_types_1)
     else:
         type_1 = random.choice(mon_types)
-
+    
     if selected_types_2:
         type_2 = random.choice(selected_types_2)
     else:
         type_2 = random.choice(mon_types)
-
-    gimmick = random.choice(selected_gimmicks) if selected_gimmicks else "None"
+    
+    if "Ultra Beast" in strength:
+        gimmick = "Beast Boost"
+    else:
+        gimmick = random.choice(selected_gimmicks) if selected_gimmicks else "None"
 
     # Check if the gimmick has a specific method, else choose randomly
     if gimmick in gimmick_method_mapping:
@@ -131,7 +139,6 @@ def generate_random_pokemon():
 
 def enforce_gimmick_rules():
     selected_gimmicks = [gimmick for gimmick, var in gimmick_vars.items() if var.get()]
-
     if selected_gimmicks:
         for gimmick in selected_gimmicks:
             if gimmick in gimmick_method_mapping:
@@ -157,25 +164,25 @@ root = customtkinter.CTk()
 root.title("Pokémon Randomizer")
 
 # Center the window
-center_window(root, 600, 550)
+center_window(root, 550, 750)
 
 # Multi-selection Listbox for Mon Strength
 customtkinter.CTkLabel(root, text="Select Mon Strength(s):").grid(row=0, column=0, padx=5, pady=5)
-mon_strength_listbox = CTkListbox(root, multiple_selection=True, height=20)
+mon_strength_listbox = CTkListbox(root, multiple_selection=True, height=40)
 mon_strength_listbox.grid(row=0, column=1)
 for strength in mon_strength:
     mon_strength_listbox.insert(customtkinter.END, strength)
 
 # Multi-selection Listbox for Type 1
 customtkinter.CTkLabel(root, text="Select Type 1(s):").grid(row=1, column=0, padx=5, pady=5)
-type_1_listbox = CTkListbox(root, multiple_selection=True, height=20)
+type_1_listbox = CTkListbox(root, multiple_selection=True, height=40)
 type_1_listbox.grid(row=1, column=1)
 for type_ in mon_types:
     type_1_listbox.insert(customtkinter.END, type_)
 
 # Multi-selection Listbox for Type 2
 customtkinter.CTkLabel(root, text="Select Type 2(s):").grid(row=2, column=0, padx=5, pady=5)
-type_2_listbox = CTkListbox(root, multiple_selection=True, height=20)
+type_2_listbox = CTkListbox(root, multiple_selection=True, height=40)
 type_2_listbox.grid(row=2, column=1)
 for type_ in mon_types:
     type_2_listbox.insert(customtkinter.END, type_)
@@ -191,7 +198,7 @@ for i, gimmick in enumerate(mon_gimmick):
 
 # Multi-selection Listbox for Gimmick Method
 customtkinter.CTkLabel(root, text="Select Gimmick Method(s):").grid(row=9, column=0, padx=5, pady=5)
-method_listbox = CustomCTkListbox(root, multiple_selection=True, height=20)
+method_listbox = CustomCTkListbox(root, multiple_selection=True, height=40)
 method_listbox.grid(row=9, column=1)
 for method in gimmick_method:
     method_listbox.insert(customtkinter.END, method)
