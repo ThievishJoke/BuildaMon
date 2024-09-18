@@ -99,6 +99,10 @@ gimmick_method_mapping = {
     "Signature Ability": "Ability",  # Always the ability
 }
 
+type_specific_shape_method_mapping = { #TODO correctly implement this
+    "Dragon": "Dragon Shapes"
+}
+
 def rand_mon_strength(): # Picks random mon strength
     global strength, mon_strength_weights
     strength = random.choices(mon_strength, mon_strength_weights)[0]
