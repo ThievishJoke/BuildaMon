@@ -4,7 +4,7 @@ import random
 
 mon_strength = ["Regular", "Convergent", "Starter", "God Pokemon",
                 "Fossil", "Pseudo", "Mythical", "Legendary", "Ultra Beast"]
-evo_count = [0, 1, 2, 3]
+evo_count = [0, 1, 2, 3, 4]
 type_count = (0, 1, 2)
 mon_types = ["Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting",
              "Poison", "Ground", "Flying", "Psychic", "Bug", "Rock", "Ghost",
@@ -119,14 +119,14 @@ def rand_evo_count():  # Pick random number of evolutinon stages:
         evolution_stage = 2
         evolution_stage_type = "Two Stage"
     elif "Convergent" in strength:
-        evolution_stage = random.choices(evo_count, weights=(0, 25, 50, 0))[0]
+        evolution_stage = random.choices(evo_count, weights=(0, 25, 50, 25, 0))[0]
         if evolution_stage == 1:
             evolution_stage_type = "One Stage"
         elif evolution_stage == 2:
             evolution_stage_type = "Two Stage"
     else:
         evolution_stage = random.choices(
-            evo_count, weights=(50, 25, 50, 10))[0]
+            evo_count, weights=(50, 25, 50, 25, 10))[0]
     if debug:
         print(f"Stage Value, {evolution_stage}")
     if evolution_stage == 0:
@@ -139,6 +139,9 @@ def rand_evo_count():  # Pick random number of evolutinon stages:
         evolution_stage_type = "Two Stage"
         number_of_evolutions = 2 # Two evolutions
     elif evolution_stage == 3:
+        evolution_stage_type = "Three Stage"
+        number_of_evolutions = 2 # Two evolutions
+    elif evolution_stage == 4:
         evolution_stage_type = "Split"
         number_of_splits = random.randint(2, 4) # Pick number of splits
         number_of_evolutions = number_of_splits # Match number of evolutions to the number of splits
@@ -274,6 +277,8 @@ def rand_stat_distribution():
     if evolution_stage == 2:
         base_stat_total = random.randint(380, 650)
     if evolution_stage == 3:
+        base_stat_total = random.randint(380, 700)
+    if evolution_stage == 4:
         base_stat_total = random.randint(380, 525)
     if "Starter" in strength:
         base_stat_total = 528
@@ -312,7 +317,6 @@ def gen_mon():
         "Evolution Method": evolution_method,
         "Type 1": monster_type[0],
     }
-
 
     if len(monster_type) > 1:
         pokemon["Type 2"] = monster_type[1]
